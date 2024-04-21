@@ -9,13 +9,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import edu.training.web.controller.concrete.Command;
+import edu.training.web.controller.concrete.impl.CommandProvider;
 import edu.training.web.logic.LogicStub;
 
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	//
-	private final LogicStub logic = new LogicStub();
+	private final CommandProvider provider = new CommandProvider();
+	
 
 	public Controller() {
 		super();
@@ -35,37 +37,10 @@ public class Controller extends HttpServlet {
 	}
 
 	private void doRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String command = request.getParameter("command");
+		String userCommand = request.getParameter("command");
 
-		switch (command) {
-		case "auth":
-			String login = request.getParameter("username");
-			String password = request.getParameter("password");
-			if(logic.checkAuth(login, password)) {
-				
-				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/main.jsp");
-				dispatcher.forward(request, response);
-			}else {
-				RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-				dispatcher.forward(request, response);
-			}
-			break;
-		case "registration":
-			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/registration.jsp");
-			dispatcher.forward(request, response);
-			break;
-		case "new_user_registration":
-			System.out.println("username " + request.getParameter("username"));
-			System.out.println("password " + request.getParameter("password"));
-			System.out.println("name " + request.getParameter("name"));
-			System.out.println("dob " + request.getParameter("dob"));
-			LocalDate date = LocalDate.parse(request.getParameter("dob"));
-			System.out.println("country " + request.getParameter("country"));
-			dispatcher = request.getRequestDispatcher("index.jsp");
-			dispatcher.forward(request, response);
-			break;
-		}
+	Command command = provider.takeCommand(userCommand);
+		command.execute(request, response);
 	}
 
 }

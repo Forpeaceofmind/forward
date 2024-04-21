@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,14 +63,28 @@
             margin-top: 15px;
             text-align: center;
         }
+        .error-message {
+			color: #a94442; /* Bootstrap 'has-error' color */
+		}
     </style>
    </head>
 <body>
 
-<div class="container mt-5">
+<div class="container ">
     <h2>Authorization</h2>
     <form action="MyController" method="post">
-        <input type="hidden" name="command" value="auth"/>
+        <input type="hidden" name="command" value="do_auth"/>
+        
+         <div class="error-message" id="error-message"> 
+			
+			
+			<c:if test="${not (requestScope.authError eq null) }">
+			     <c:out value="${requestScope.authError}" />
+			</c:if>
+			
+			
+			</div>
+        
         <div class="form-group">
             <label for="loginUsername">Login</label>
             <input type="text" class="form-control" id="loginUsername" name="username" required>
@@ -80,7 +95,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Enter</button>
     </form>
-    <p>Not register yet? <a href="MyController?command=registration">Registration</a></p>
+    <p>Not register yet? <a href="MyController?command=go_to_registration_page">Registration</a></p>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {

@@ -14,7 +14,7 @@
     <div class="container mt-5">
         <h2>User Registration</h2>
         <form action="MyController" method="post">
-            <input type="hidden" name="command" value="new_user_registration"/>
+            <input type="hidden" name="command" value="do_registration"/>
             <div class="form-group">
                 <label for="login">Login</label> <!-- Changed 'Email' to 'Login' here -->
                 <input type="text" class="form-control" id="username" name="username" required>
